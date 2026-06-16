@@ -42,14 +42,20 @@ socket.on('update-user-list', userList => {
     updateOnlineUsers(userList);
 });
 
-function updateOnlineUsers(userList) {
-    userList.innerHTML = ''; // Clear the current list
-
-    userList.forEach(userName => {
-        addUserToList(userName);
+function updateOnlineUsers(users) {
+    const currentNodes = Array.from(userList.children);
+    
+    currentNodes.forEach(node => {
+        if (!users.includes(node.innerText)) {
+            userList.removeChild(node);
+        }
     });
 
-    // userList.sort();
+    users.forEach(userName => {
+        if (!currentNodes.some(node => node.innerText === userName)) {
+            addUserToList(userName);
+        }
+    });
 }
 
 function addUserToList(userName) {
